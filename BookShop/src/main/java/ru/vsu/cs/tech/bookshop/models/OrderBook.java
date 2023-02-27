@@ -18,6 +18,14 @@ public class OrderBook implements Serializable {
         this.booksCount = booksCount;
     }
 
+    public void copyDataFromAnotherOrderBook(OrderBook book) {
+        this.order = book.order;
+        this.bookName = book.bookName;
+        this.bookAuthor = book.bookAuthor;
+        this.bookTag = book.bookTag;
+        this.booksCount = book.booksCount;
+    }
+
     public Long getId() {
         return id;
     }

@@ -2,7 +2,7 @@ package ru.vsu.cs.tech.bookshop.models;
 
 import java.io.Serializable;
 
-public class Book implements Serializable {
+public class Book implements Serializable{
 
     private Long bookId;
     private BookCategory category;
@@ -42,6 +42,21 @@ public class Book implements Serializable {
         this.countInShop = countInShop;
         this.status = status;
         this.rating = rating;
+    }
+
+    public void copyInfoFromAnotherBook(Book newBook) {
+        this.category = newBook.category;
+        this.author = newBook.author;
+        this.name = newBook.name;
+        this.publishingHouse = newBook.publishingHouse;
+        this.publishYear = newBook.publishYear;
+        this.pagesCount = newBook.pagesCount;
+        this.price = newBook.price;
+        this.retailMargin = newBook.retailMargin;
+        this.availability = newBook.availability;
+        this.countInShop = newBook.countInShop;
+        this.status = newBook.status;
+        this.rating = newBook.rating;
     }
 
     public Long getBookId() {

@@ -16,6 +16,13 @@ public class Query implements Serializable {
         this.status = status;
     }
 
+    public void copyDataFromAnotherQuery(Query query) {
+        this.publishingHouse = query.publishingHouse;
+        this.book = query.book;
+        this.booksCount = query.booksCount;
+        this.status = query.status;
+    }
+
     public Long getQueryId() {
         return queryId;
     }

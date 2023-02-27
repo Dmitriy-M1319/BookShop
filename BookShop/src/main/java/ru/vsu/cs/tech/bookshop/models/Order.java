@@ -7,13 +7,20 @@ public class Order implements Serializable {
     private String customerSurname;
     private String phoneNumber;
     private String email;
-    private String Status;
+    private String status;
 
     public Order(String customerSurname, String phoneNumber, String email, String status) {
         this.customerSurname = customerSurname;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        Status = status;
+        this.status = status;
+    }
+
+    public void copyDataFromAnotherOrder(Order order) {
+        this.customerSurname = order.customerSurname;
+        this.phoneNumber = order.phoneNumber;
+        this.email = order.email;
+        this.status = order.status;
     }
 
     public Long getOrderId() {
@@ -49,10 +56,10 @@ public class Order implements Serializable {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
 }
