@@ -1,12 +1,25 @@
 package ru.vsu.cs.tech.bookshop.models;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.io.Serializable;
 
+@Entity
 public class Query implements Serializable {
+    @Id
+    @GeneratedValue
     private Long queryId;
+    @Column(name = "publishing_house")
     private String publishingHouse;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
+    @Column(name = "books_count")
     private Integer booksCount;
+    @Column
     private String status;
 
     public Query(String publishingHouse, Book book, Integer booksCount, String status) {
@@ -14,6 +27,10 @@ public class Query implements Serializable {
         this.book = book;
         this.booksCount = booksCount;
         this.status = status;
+    }
+
+    public Query() {
+
     }
 
     public void copyDataFromAnotherQuery(Query query) {

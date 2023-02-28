@@ -1,13 +1,27 @@
 package ru.vsu.cs.tech.bookshop.models;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.io.Serializable;
 
+@Entity
 public class OrderBook implements Serializable {
+    @Id
+    @GeneratedValue
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Order order;
+    @Column(name = "book_name")
     private String bookName;
+    @Column(name = "book_author")
     private String bookAuthor;
+    @Column(name = "book_tag")
     private String bookTag;
+    @Column(name = "book_count")
     private Integer booksCount;
 
     public OrderBook(Order order, String bookName, String bookAuthor, String bookTag, Integer booksCount) {
@@ -16,6 +30,10 @@ public class OrderBook implements Serializable {
         this.bookAuthor = bookAuthor;
         this.bookTag = bookTag;
         this.booksCount = booksCount;
+    }
+
+    public OrderBook() {
+
     }
 
     public void copyDataFromAnotherOrderBook(OrderBook book) {

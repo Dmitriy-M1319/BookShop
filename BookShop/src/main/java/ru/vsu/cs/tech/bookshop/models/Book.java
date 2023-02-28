@@ -1,21 +1,42 @@
 package ru.vsu.cs.tech.bookshop.models;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.io.Serializable;
 
+@Entity
 public class Book implements Serializable{
 
+    @Id
+    @GeneratedValue
     private Long bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private BookCategory category;
+    @Column
     private String author;
+    @Column
     private String name;
+    @Column(name = "publishing_house")
     private String publishingHouse;
+    @Column(name = "publish_year")
     private Integer publishYear;
+    @Column(name = "pages_count")
     private Integer pagesCount;
+    @Column
     private Integer price;
+    @Column(name = "retail_margin")
     private Integer retailMargin;
+    @Column
     private Boolean availability;
+    @Column(name = "count_in_shop")
     private Integer countInShop;
+    @Column
     private String status;
+    @Column
     private Float rating;
 
     public Book(BookCategory category,
@@ -42,6 +63,9 @@ public class Book implements Serializable{
         this.countInShop = countInShop;
         this.status = status;
         this.rating = rating;
+    }
+
+    public Book() {
     }
 
     public void copyInfoFromAnotherBook(Book newBook) {

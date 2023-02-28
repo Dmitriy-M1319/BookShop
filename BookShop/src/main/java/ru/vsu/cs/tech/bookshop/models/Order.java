@@ -1,12 +1,24 @@
 package ru.vsu.cs.tech.bookshop.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 import java.io.Serializable;
 
+@Entity
 public class Order implements Serializable {
+    @Id
+    @GeneratedValue
     private Long orderId;
+    @Column(name = "customer_surname")
     private String customerSurname;
+    @Column(name = "phone_number")
     private String phoneNumber;
+    @Column
     private String email;
+    @Column
     private String status;
 
     public Order(String customerSurname, String phoneNumber, String email, String status) {
@@ -14,6 +26,10 @@ public class Order implements Serializable {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.status = status;
+    }
+
+    public Order() {
+
     }
 
     public void copyDataFromAnotherOrder(Order order) {
