@@ -1,5 +1,8 @@
 package ru.vsu.cs.tech.bookshop.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -7,18 +10,19 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "books")
 public class Book implements Serializable{
 
     @Id
     @GeneratedValue
     private Long bookId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private BookCategory category;
-    @Column
+    @Column(name = "author")
     private String author;
-    @Column
+    @Column(name = "name")
     private String name;
     @Column(name = "publishing_house")
     private String publishingHouse;
@@ -26,17 +30,17 @@ public class Book implements Serializable{
     private Integer publishYear;
     @Column(name = "pages_count")
     private Integer pagesCount;
-    @Column
+    @Column(name = "price")
     private Integer price;
     @Column(name = "retail_margin")
     private Integer retailMargin;
-    @Column
+    @Column(name = "availability")
     private Boolean availability;
     @Column(name = "count_in_shop")
     private Integer countInShop;
-    @Column
+    @Column(name = "status")
     private String status;
-    @Column
+    @Column(name = "rating")
     private Float rating;
 
     public Book(BookCategory category,

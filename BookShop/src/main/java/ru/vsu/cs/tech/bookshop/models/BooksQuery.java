@@ -7,7 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.io.Serializable;
 
 @Entity
-public class Query implements Serializable {
+@Table(name = "queries")
+public class BooksQuery implements Serializable {
     @Id
     @GeneratedValue
     private Long queryId;
@@ -22,18 +23,18 @@ public class Query implements Serializable {
     @Column
     private String status;
 
-    public Query(String publishingHouse, Book book, Integer booksCount, String status) {
+    public BooksQuery(String publishingHouse, Book book, Integer booksCount, String status) {
         this.publishingHouse = publishingHouse;
         this.book = book;
         this.booksCount = booksCount;
         this.status = status;
     }
 
-    public Query() {
+    public BooksQuery() {
 
     }
 
-    public void copyDataFromAnotherQuery(Query query) {
+    public void copyDataFromAnotherQuery(BooksQuery query) {
         this.publishingHouse = query.publishingHouse;
         this.book = query.book;
         this.booksCount = query.booksCount;

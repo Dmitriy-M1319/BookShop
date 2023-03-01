@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "order_books")
 public class OrderBook implements Serializable {
     @Id
     @GeneratedValue
