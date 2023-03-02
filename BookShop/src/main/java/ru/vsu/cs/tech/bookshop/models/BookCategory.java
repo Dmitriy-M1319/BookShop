@@ -1,10 +1,17 @@
 package ru.vsu.cs.tech.bookshop.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "book_categories")
 public class BookCategory  implements Serializable {
 
@@ -15,27 +22,9 @@ public class BookCategory  implements Serializable {
     @Column
     private String name;
 
+    @OneToMany(mappedBy = "category")
+    private List<Book> books;
     public BookCategory(String name) {
-        this.name = name;
-    }
-
-    public BookCategory() {
-
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }

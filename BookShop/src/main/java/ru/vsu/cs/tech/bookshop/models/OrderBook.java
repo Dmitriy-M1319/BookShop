@@ -1,12 +1,19 @@
 package ru.vsu.cs.tech.bookshop.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "order_books")
 public class OrderBook implements Serializable {
     @Id
@@ -15,6 +22,7 @@ public class OrderBook implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnore
     private Order order;
     @Column(name = "book_name")
     private String bookName;
@@ -30,66 +38,6 @@ public class OrderBook implements Serializable {
         this.bookName = bookName;
         this.bookAuthor = bookAuthor;
         this.bookTag = bookTag;
-        this.booksCount = booksCount;
-    }
-
-    public OrderBook() {
-
-    }
-
-    public void copyDataFromAnotherOrderBook(OrderBook book) {
-        this.order = book.order;
-        this.bookName = book.bookName;
-        this.bookAuthor = book.bookAuthor;
-        this.bookTag = book.bookTag;
-        this.booksCount = book.booksCount;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public String getBookAuthor() {
-        return bookAuthor;
-    }
-
-    public void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
-    }
-
-    public String getBookTag() {
-        return bookTag;
-    }
-
-    public void setBookTag(String bookTag) {
-        this.bookTag = bookTag;
-    }
-
-    public Integer getBooksCount() {
-        return booksCount;
-    }
-
-    public void setBooksCount(Integer booksCount) {
         this.booksCount = booksCount;
     }
 }

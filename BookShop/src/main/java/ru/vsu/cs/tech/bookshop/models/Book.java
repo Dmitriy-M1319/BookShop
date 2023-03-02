@@ -1,15 +1,20 @@
 package ru.vsu.cs.tech.bookshop.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "books")
 public class Book implements Serializable{
 
@@ -19,7 +24,12 @@ public class Book implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private BookCategory category;
+
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    List<BooksQuery> queries;
     @Column(name = "author")
     private String author;
     @Column(name = "name")
@@ -43,8 +53,7 @@ public class Book implements Serializable{
     @Column(name = "rating")
     private Float rating;
 
-    public Book(BookCategory category,
-                String author,
+    public Book(String author,
                 String name,
                 String publishingHouse,
                 Integer publishYear,
@@ -55,7 +64,6 @@ public class Book implements Serializable{
                 Integer countInShop,
                 String status,
                 Float rating) {
-        this.category = category;
         this.author = author;
         this.name = name;
         this.publishingHouse = publishingHouse;
@@ -66,128 +74,6 @@ public class Book implements Serializable{
         this.availability = availability;
         this.countInShop = countInShop;
         this.status = status;
-        this.rating = rating;
-    }
-
-    public Book() {
-    }
-
-    public void copyInfoFromAnotherBook(Book newBook) {
-        this.category = newBook.category;
-        this.author = newBook.author;
-        this.name = newBook.name;
-        this.publishingHouse = newBook.publishingHouse;
-        this.publishYear = newBook.publishYear;
-        this.pagesCount = newBook.pagesCount;
-        this.price = newBook.price;
-        this.retailMargin = newBook.retailMargin;
-        this.availability = newBook.availability;
-        this.countInShop = newBook.countInShop;
-        this.status = newBook.status;
-        this.rating = newBook.rating;
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
-    }
-
-    public BookCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(BookCategory category) {
-        this.category = category;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPublishingHouse() {
-        return publishingHouse;
-    }
-
-    public void setPublishingHouse(String publishingHouse) {
-        this.publishingHouse = publishingHouse;
-    }
-
-    public Integer getPublishYear() {
-        return publishYear;
-    }
-
-    public void setPublishYear(Integer publishYear) {
-        this.publishYear = publishYear;
-    }
-
-    public Integer getPagesCount() {
-        return pagesCount;
-    }
-
-    public void setPagesCount(Integer pagesCount) {
-        this.pagesCount = pagesCount;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public Integer getRetailMargin() {
-        return retailMargin;
-    }
-
-    public void setRetailMargin(Integer retailMargin) {
-        this.retailMargin = retailMargin;
-    }
-
-    public Boolean getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Boolean availability) {
-        this.availability = availability;
-    }
-
-    public Integer getCountInShop() {
-        return countInShop;
-    }
-
-    public void setCountInShop(Integer countInShop) {
-        this.countInShop = countInShop;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Float getRating() {
-        return rating;
-    }
-
-    public void setRating(Float rating) {
         this.rating = rating;
     }
 }

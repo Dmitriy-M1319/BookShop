@@ -1,12 +1,18 @@
 package ru.vsu.cs.tech.bookshop.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "queries")
 public class BooksQuery implements Serializable {
     @Id
@@ -27,57 +33,6 @@ public class BooksQuery implements Serializable {
         this.publishingHouse = publishingHouse;
         this.book = book;
         this.booksCount = booksCount;
-        this.status = status;
-    }
-
-    public BooksQuery() {
-
-    }
-
-    public void copyDataFromAnotherQuery(BooksQuery query) {
-        this.publishingHouse = query.publishingHouse;
-        this.book = query.book;
-        this.booksCount = query.booksCount;
-        this.status = query.status;
-    }
-
-    public Long getQueryId() {
-        return queryId;
-    }
-
-    public void setQueryId(Long queryId) {
-        this.queryId = queryId;
-    }
-
-    public String getPublishingHouse() {
-        return publishingHouse;
-    }
-
-    public void setPublishingHouse(String publishingHouse) {
-        this.publishingHouse = publishingHouse;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public Integer getBooksCount() {
-        return booksCount;
-    }
-
-    public void setBooksCount(Integer booksCount) {
-        this.booksCount = booksCount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
     }
 }
