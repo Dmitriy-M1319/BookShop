@@ -1,61 +1,73 @@
 package ru.vsu.cs.tech.bookshop.controllers;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.tech.bookshop.models.Order;
 import ru.vsu.cs.tech.bookshop.repositories.OrderRepository;
+import ru.vsu.cs.tech.bookshop.services.OrderService;
 
+import java.io.Serializable;
 import java.util.List;
 
 @RestController
 public class OrderController {
 
     @Autowired
-    private OrderRepository repository;
+    private OrderService service;
 
     @GetMapping("/orders")
     public List<Order> getAllOrders() {
-        return repository.findAll();
+        return service.getAllOrders();
     }
 
     @GetMapping("/orders/{id}")
-    public Order getOrderById(@PathVariable Long id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new Exception("Такого заказа не существует"));
+    public ResponseEntity<?> getOrderById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getOrderById(id));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @GetMapping("/orders/customer/{surname}")
     public List<Order> getOrdersBySurname(@PathVariable String surname) {
-        return repository.findOrdersByCustomerSurname(surname);
+        return service.getOrdersByCustomer(surname);
     }
 
     @GetMapping("/orders/status/{status}")
     public List<Order> getOrdersByStatus(@PathVariable String status) {
-        return repository.findOrdersByStatus(status);
+        return service.getOrdersByStatus(status);
     }
 
     @PostMapping("/orders/create")
     public Order createOrder(@RequestBody Order order) {
-        return repository.save(order);
+        return service.addOrder(order);
     }
 
     @PutMapping("/orders/{id}/update")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) throws Exception {
-        return repository.findById(id).map(o -> {
-            o.setCustomerSurname(order.getCustomerSurname());
-            o.setPhoneNumber(order.getPhoneNumber());
-            o.setEmail(order.getEmail());
-            o.setStatus(order.getStatus());
-            return repository.save(o);
-        }).orElseThrow(() -> new Exception("Такого заказа не существует"));
+    public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+        try {
+            return ResponseEntity.ok(service.updateExistingOrder(id, order));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @DeleteMapping("/orders/{id}/{delete}")
-    public ResponseEntity<?> deleteOrder(@PathVariable Long id) throws Exception{
-        return repository.findById(id).map(c -> {
-            repository.delete(c);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new Exception("Такого заказа не существует"));
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.deleteExistingOrder(id));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
+
     }
 }

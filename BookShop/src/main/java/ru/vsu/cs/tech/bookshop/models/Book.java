@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "books")
-public class Book implements Serializable{
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue
