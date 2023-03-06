@@ -1,5 +1,6 @@
 package ru.vsu.cs.tech.bookshop.controllers;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,61 +8,72 @@ import ru.vsu.cs.tech.bookshop.models.Book;
 import ru.vsu.cs.tech.bookshop.models.BooksQuery;
 import ru.vsu.cs.tech.bookshop.repositories.BookRepository;
 import ru.vsu.cs.tech.bookshop.repositories.QueryRepository;
+import ru.vsu.cs.tech.bookshop.services.BookQueryService;
 
 import java.util.List;
 
 @RestController
 public class BookQueryController {
     @Autowired
-    private QueryRepository repository;
+    private BookQueryService service;
 
-    @Autowired
-    private BookRepository bookRepository;
 
     @GetMapping("/queries")
     public List<BooksQuery> getAllQueries() {
-        return repository.findAll();
+        return service.getAllBookQueries();
     }
 
     @GetMapping("/queries/{id}")
-    public BooksQuery getQueryById(@PathVariable Long id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new Exception("Такого запроса не существует"));
+    public ResponseEntity<?> getQueryById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getBookQueryById(id));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @GetMapping("/books/{id}/queries")
     public List<BooksQuery> getQueriesByBook(@PathVariable Long id) {
-        return repository.findQueriesByBookId(id);
+        return service.getBooksQueriesByBookId(id);
     }
 
     @GetMapping("/queries/status/{status}")
     public List<BooksQuery> getQueriesByStatus(@PathVariable String status) {
-        return repository.findQueriesByStatus(status);
+        return service.getBooksQueriesByStatus(status);
     }
 
     @PostMapping("/books/{id}/queries/create")
-    public BooksQuery createQuery(@PathVariable Long id, @RequestBody BooksQuery query) throws Exception{
-        Book book = bookRepository.findById(id).orElseThrow(() -> new Exception("Такой книги не существует"));
-        query.setBook(book);
-        return repository.save(query);
+    public ResponseEntity<?> createQuery(@PathVariable Long id, @RequestBody BooksQuery query) {
+        try {
+            return ResponseEntity.ok(service.addNewQuery(id, query));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @PutMapping("/queries/{id}/update")
-    public BooksQuery updateQuery(@PathVariable Long id, @RequestBody BooksQuery query) throws Exception {
-        return repository.findById(id).map(q -> {
-            q.setBooksCount(query.getBooksCount());
-            q.setPublishingHouse(query.getPublishingHouse());
-            q.setStatus(query.getStatus());
-            return repository.save(q);
-        }).orElseThrow(() -> new Exception("Такого запроса не существует"));
+    public ResponseEntity<?> updateQuery(@PathVariable Long id, @RequestBody BooksQuery query) {
+        try {
+            return ResponseEntity.ok(service.updateExistingQuery(id, query));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @DeleteMapping("/queries/{id}/delete")
-    public ResponseEntity<?> deleteQuery(@PathVariable Long id) throws Exception {
-        return repository.findById(id).map(c -> {
-            repository.delete(c);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new Exception("Такого запроса не существует"));
+    public ResponseEntity<?> deleteQuery(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.deleteExistingQuery(id));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
-
-
 }
