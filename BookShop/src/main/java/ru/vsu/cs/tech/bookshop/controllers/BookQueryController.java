@@ -17,7 +17,6 @@ public class BookQueryController {
     @Autowired
     private BookQueryService service;
 
-
     @GetMapping("/queries")
     public List<BooksQuery> getAllQueries() {
         return service.getAllBookQueries();
