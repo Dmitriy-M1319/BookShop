@@ -3,9 +3,8 @@ package ru.vsu.cs.tech.bookshop.dto;
 import lombok.Data;
 
 @Data
-public class BookDto {
-    private Long id;
-    private BookCategoryDto category;
+public class BookPostDto {
+    private Long categoryId;
     private String author;
     private String publishingHouse;
     private Integer publishYear;

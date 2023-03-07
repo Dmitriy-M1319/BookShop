@@ -3,7 +3,7 @@ package ru.vsu.cs.tech.bookshop.dto;
 import lombok.Data;
 
 @Data
-public class OrderBookDto {
+public class OrderBookGetDto {
     private Long id;
     private OrderDto order;
     private String bookName;

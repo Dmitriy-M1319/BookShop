@@ -2,6 +2,8 @@ package ru.vsu.cs.tech.bookshop.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class OrderDto {
     private Long id;
