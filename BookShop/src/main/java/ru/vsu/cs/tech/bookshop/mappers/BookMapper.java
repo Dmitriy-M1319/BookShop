@@ -7,5 +7,5 @@ import ru.vsu.cs.tech.bookshop.models.Book;
 @Mapper(componentModel = "spring")
 public interface BookMapper {
     BookGetDto toGetDto(Book model);
-    Book toModel(BookGetDto postDto);
+    Book toModel(BookGetDto getDto);
 }

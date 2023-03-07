@@ -1,10 +1,11 @@
 package ru.vsu.cs.tech.bookshop.controllers;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.vsu.cs.tech.bookshop.models.BookCategory;
-import ru.vsu.cs.tech.bookshop.repositories.BookCategoryRepository;
+import ru.vsu.cs.tech.bookshop.dto.BookCategoryDto;
+import ru.vsu.cs.tech.bookshop.services.BookCategoryService;
 
 import java.util.List;
 
@@ -12,43 +13,58 @@ import java.util.List;
 public class BookCategoryController {
 
     @Autowired
-    private BookCategoryRepository repository;
-
+    private BookCategoryService service;
     @GetMapping("/categories")
-    public List<BookCategory> getAllBookCategories() {
-        return repository.findAll();
+    public List<BookCategoryDto> getAllBookCategories() {
+        return service.getAllCategories();
     }
 
     @GetMapping("/categories/{id}")
-    public BookCategory getBookCategoryById(@PathVariable Long id) throws Exception{
-        return repository.findById(id)
-                .orElseThrow(() -> new Exception("Такой категории не существует"));
+    public ResponseEntity<?> getBookCategoryById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getCategoryById(id));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @GetMapping("/categories/name/{name}")
-    public BookCategory getBookCategoryByName(@PathVariable String name) throws Exception{
-        return repository.findBookCategoryByName(name)
-                .orElseThrow(() -> new Exception("Такой категории не существует"));
+    public ResponseEntity<?> getBookCategoryByName(@PathVariable String name) {
+        try {
+            return ResponseEntity.ok(service.getCategoryByName(name));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @PostMapping("/categories/create")
-    public BookCategory createBookCategory(@RequestBody BookCategory category) {
-        return repository.save(category);
+    public BookCategoryDto createBookCategory(@RequestBody BookCategoryDto category) {
+        return service.addNewCategory(category);
     }
 
-    @PutMapping("/categories/update/{id}")
-    public BookCategory updateBookCategory(@PathVariable Long id, @RequestBody BookCategory category) throws Exception{
-        return repository.findById(id).map(c -> {
-            c.setName(category.getName());
-            return repository.save(c);
-        }).orElseThrow(() -> new Exception("Категории с id " + id + "не существует"));
+    @PutMapping("/categories/{id}/update")
+    public ResponseEntity<?> updateBookCategory(@PathVariable Long id, @RequestBody BookCategoryDto category) {
+        try {
+            return ResponseEntity.ok(service.updateExistingCategory(id, category));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 
     @DeleteMapping("/categories/delete/{id}")
-    public ResponseEntity<?> deleteBookCategory(@PathVariable Long id) throws Exception {
-        return repository.findById(id).map(c -> {
-            repository.delete(c);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new Exception("Категории с id " + id + "не существует"));
+    public ResponseEntity<?> deleteBookCategory(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.deleteExistingCategory(id));
+        } catch (IllegalArgumentException e) {
+            JSONObject resp = new JSONObject();
+            resp.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(resp);
+        }
     }
 }

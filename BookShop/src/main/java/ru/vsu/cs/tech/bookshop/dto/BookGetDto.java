@@ -7,6 +7,7 @@ public class BookGetDto {
     private Long id;
     private BookCategoryDto category;
     private String author;
+    private String name;
     private String publishingHouse;
     private Integer publishYear;
     private Integer pagesCount;

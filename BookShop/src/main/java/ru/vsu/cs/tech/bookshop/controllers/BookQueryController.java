@@ -4,6 +4,8 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vsu.cs.tech.bookshop.dto.BookQueryGetDto;
+import ru.vsu.cs.tech.bookshop.dto.BookQueryPostDto;
 import ru.vsu.cs.tech.bookshop.models.Book;
 import ru.vsu.cs.tech.bookshop.models.BooksQuery;
 import ru.vsu.cs.tech.bookshop.repositories.BookRepository;
@@ -18,7 +20,7 @@ public class BookQueryController {
     private BookQueryService service;
 
     @GetMapping("/queries")
-    public List<BooksQuery> getAllQueries() {
+    public List<BookQueryGetDto> getAllQueries() {
         return service.getAllBookQueries();
     }
 
@@ -34,19 +36,19 @@ public class BookQueryController {
     }
 
     @GetMapping("/books/{id}/queries")
-    public List<BooksQuery> getQueriesByBook(@PathVariable Long id) {
+    public List<BookQueryGetDto> getQueriesByBook(@PathVariable Long id) {
         return service.getBooksQueriesByBookId(id);
     }
 
     @GetMapping("/queries/status/{status}")
-    public List<BooksQuery> getQueriesByStatus(@PathVariable String status) {
+    public List<BookQueryGetDto> getQueriesByStatus(@PathVariable String status) {
         return service.getBooksQueriesByStatus(status);
     }
 
-    @PostMapping("/books/{id}/queries/create")
-    public ResponseEntity<?> createQuery(@PathVariable Long id, @RequestBody BooksQuery query) {
+    @PostMapping("/queries/create")
+    public ResponseEntity<?> createQuery(@RequestBody BookQueryPostDto query) {
         try {
-            return ResponseEntity.ok(service.addNewQuery(id, query));
+            return ResponseEntity.ok(service.addNewQuery(query));
         } catch (IllegalArgumentException e) {
             JSONObject resp = new JSONObject();
             resp.put("message", e.getMessage());
@@ -55,7 +57,7 @@ public class BookQueryController {
     }
 
     @PutMapping("/queries/{id}/update")
-    public ResponseEntity<?> updateQuery(@PathVariable Long id, @RequestBody BooksQuery query) {
+    public ResponseEntity<?> updateQuery(@PathVariable Long id, @RequestBody BookQueryPostDto query) {
         try {
             return ResponseEntity.ok(service.updateExistingQuery(id, query));
         } catch (IllegalArgumentException e) {

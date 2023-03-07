@@ -5,7 +5,7 @@ import ru.vsu.cs.tech.bookshop.dto.BookQueryGetDto;
 import ru.vsu.cs.tech.bookshop.models.BooksQuery;
 
 @Mapper(componentModel = "spring")
-public interface BookQueryDto {
+public interface BookQueryMapper {
     BookQueryGetDto toDto(BooksQuery model);
     BooksQuery toModel (BookQueryGetDto dto);
 }

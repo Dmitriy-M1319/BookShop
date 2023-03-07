@@ -4,6 +4,8 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vsu.cs.tech.bookshop.dto.BookGetDto;
+import ru.vsu.cs.tech.bookshop.dto.BookPostDto;
 import ru.vsu.cs.tech.bookshop.models.Book;
 import ru.vsu.cs.tech.bookshop.services.BookService;
 
@@ -16,7 +18,7 @@ public class BookController {
     private BookService service;
 
     @GetMapping("/books")
-    public List<Book> getAllBooks() {
+    public List<BookGetDto> getAllBooks() {
         return service.getAllBooks();
     }
 
@@ -32,29 +34,29 @@ public class BookController {
     }
 
     @GetMapping("/category/{id}/books")
-    public List<Book> getBooksByCategoryId(@PathVariable Long id) {
+    public List<BookGetDto> getBooksByCategoryId(@PathVariable Long id) {
         return service.getBooksByCategory(id);
     }
 
     @GetMapping("/books/available")
-    public List<Book> getAvailableBooks() {
+    public List<BookGetDto> getAvailableBooks() {
         return service.getAvailableBooks();
     }
 
     @GetMapping("/books/new")
-    public List<Book> getNewBooks() {
+    public List<BookGetDto> getNewBooks() {
         return service.getBooksByStatus("новая");
     }
 
     @GetMapping("/books/common")
-    public List<Book> getCommonBooks() {
+    public List<BookGetDto> getCommonBooks() {
         return service.getBooksByStatus("известная");
     }
 
-    @PostMapping("/categories/{id}/books/create")
-    public ResponseEntity<?> createBook(@PathVariable Long id, @RequestBody Book book) {
+    @PostMapping("/books/create")
+    public ResponseEntity<?> createBook(@RequestBody BookPostDto book) {
         try {
-            return ResponseEntity.ok(service.addBook(book, id));
+            return ResponseEntity.ok(service.addBook(book));
         } catch (IllegalArgumentException e) {
             JSONObject resp = new JSONObject();
             resp.put("message", e.getMessage());
@@ -63,9 +65,9 @@ public class BookController {
     }
 
     @PutMapping("/books/{id}/update")
-    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestParam(value = "category_id") Long categoryId, @RequestBody Book book) {
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookPostDto book) {
         try {
-            return ResponseEntity.ok(service.updateExistingBook(id, book, categoryId));
+            return ResponseEntity.ok(service.updateExistingBook(id, book));
         } catch (IllegalArgumentException e) {
             JSONObject resp = new JSONObject();
             resp.put("message", e.getMessage());

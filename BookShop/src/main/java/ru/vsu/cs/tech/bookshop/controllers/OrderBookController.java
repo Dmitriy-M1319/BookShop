@@ -4,6 +4,8 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vsu.cs.tech.bookshop.dto.OrderBookGetDto;
+import ru.vsu.cs.tech.bookshop.dto.OrderBookPostDto;
 import ru.vsu.cs.tech.bookshop.models.Order;
 import ru.vsu.cs.tech.bookshop.models.OrderBook;
 import ru.vsu.cs.tech.bookshop.repositories.OrderBookRepository;
@@ -12,7 +14,6 @@ import ru.vsu.cs.tech.bookshop.services.OrderBookService;
 
 import java.io.Serializable;
 import java.util.List;
-
 @RestController
 public class OrderBookController {
 
@@ -20,14 +21,14 @@ public class OrderBookController {
     private OrderBookService service;
 
     @GetMapping("/orders/{id}/books")
-    public List<OrderBook> getBooksByOrder(@PathVariable Long id) {
+    public List<OrderBookGetDto> getBooksByOrder(@PathVariable Long id) {
         return service.getOrderBooksByOrderId(id);
     }
 
     @PostMapping("/orders/{id}/books/create")
-    public ResponseEntity<?> createOrderBook(@PathVariable Long id, @RequestBody OrderBook orderBook) {
+    public ResponseEntity<?> createOrderBook(@PathVariable Long id, @RequestBody OrderBookPostDto orderBook) {
         try {
-            return ResponseEntity.ok(service.addOrderBook(id, orderBook));
+            return ResponseEntity.ok(service.addOrderBook(orderBook));
         } catch (IllegalArgumentException e) {
             JSONObject resp = new JSONObject();
             resp.put("message", e.getMessage());
@@ -36,9 +37,9 @@ public class OrderBookController {
     }
 
     @PutMapping("/orders/{id}/books/{bookId}/update")
-    public ResponseEntity<?> updateOrderBook(@PathVariable Long id, @PathVariable Long bookId, @RequestBody OrderBook book) {
+    public ResponseEntity<?> updateOrderBook(@PathVariable Long bookId, @RequestBody OrderBookPostDto book) {
         try {
-            return ResponseEntity.ok(service.updateExistingBook(bookId, id, book));
+            return ResponseEntity.ok(service.updateExistingBook(bookId, book));
         } catch (IllegalArgumentException e) {
             JSONObject resp = new JSONObject();
             resp.put("message", e.getMessage());

@@ -6,6 +6,7 @@ import lombok.Data;
 public class BookPostDto {
     private Long categoryId;
     private String author;
+    private String name;
     private String publishingHouse;
     private Integer publishYear;
     private Integer pagesCount;
