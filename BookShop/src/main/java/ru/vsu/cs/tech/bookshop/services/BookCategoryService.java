@@ -1,5 +1,6 @@
 package ru.vsu.cs.tech.bookshop.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.tech.bookshop.dto.BookCategoryDto;
@@ -12,11 +13,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookCategoryService {
-    private final BookCategoryRepository repository;
-    private BookCategoryMapper mapper;
+    @Autowired
+    private BookCategoryRepository repository;
+    private final BookCategoryMapper mapper;
 
-    public BookCategoryService(BookCategoryRepository repository, BookCategoryMapper mapper) {
-        this.repository = repository;
+    public BookCategoryService(BookCategoryMapper mapper) {
         this.mapper = mapper;
     }
 

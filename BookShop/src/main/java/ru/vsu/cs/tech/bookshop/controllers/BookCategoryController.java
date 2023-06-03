@@ -12,8 +12,12 @@ import java.util.List;
 @RestController
 public class BookCategoryController {
 
-    @Autowired
-    private BookCategoryService service;
+    private final BookCategoryService service;
+
+    public BookCategoryController(BookCategoryService service) {
+        this.service = service;
+    }
+
     @GetMapping("/categories")
     public List<BookCategoryDto> getAllBookCategories() {
         return service.getAllCategories();

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-   @Query(value = "select b from Book b where b.category.categoryId = ?1")
+   @Query(value = "select b from Book b where b.category.id = ?1")
    List<Book> findBooksByBookCategoryId(Long categoryId);
 
    @Query(value = "select b from Book b where b.availability = true")

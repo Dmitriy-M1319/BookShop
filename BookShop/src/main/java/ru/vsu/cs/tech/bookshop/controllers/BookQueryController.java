@@ -1,23 +1,22 @@
 package ru.vsu.cs.tech.bookshop.controllers;
 
 import net.minidev.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.tech.bookshop.dto.BookQueryGetDto;
 import ru.vsu.cs.tech.bookshop.dto.BookQueryPostDto;
-import ru.vsu.cs.tech.bookshop.models.Book;
-import ru.vsu.cs.tech.bookshop.models.BooksQuery;
-import ru.vsu.cs.tech.bookshop.repositories.BookRepository;
-import ru.vsu.cs.tech.bookshop.repositories.QueryRepository;
 import ru.vsu.cs.tech.bookshop.services.BookQueryService;
 
 import java.util.List;
 
 @RestController
 public class BookQueryController {
-    @Autowired
-    private BookQueryService service;
+
+    private final BookQueryService service;
+
+    public BookQueryController(BookQueryService service) {
+        this.service = service;
+    }
 
     @GetMapping("/queries")
     public List<BookQueryGetDto> getAllQueries() {

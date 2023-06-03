@@ -15,9 +15,9 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Table(name = "order_books")
-public class OrderBook implements Serializable {
+public class OrderBook {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")

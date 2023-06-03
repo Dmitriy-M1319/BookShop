@@ -14,14 +14,15 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Table(name = "queries")
-public class BooksQuery implements Serializable {
+public class BooksQuery {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long queryId;
     @Column(name = "publishing_house")
     private String publishingHouse;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
     @Column(name = "books_count")

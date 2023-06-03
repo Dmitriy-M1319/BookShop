@@ -1,5 +1,6 @@
 package ru.vsu.cs.tech.bookshop.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.tech.bookshop.dto.OrderBookGetDto;
@@ -14,15 +15,15 @@ import java.util.stream.Collectors;
 @Service
 public class OrderBookService {
 
-    private final OrderBookRepository repository;
+    @Autowired
+    private OrderBookRepository repository;
 
-    private final OrderService orderService;
-    private final OrderBookMapper mapper;
+    @Autowired
+    private OrderService orderService;
+    private OrderBookMapper mapper;
 
-    public OrderBookService(OrderBookMapper mapper, OrderBookRepository repository, OrderService orderService) {
+    public OrderBookService(OrderBookMapper mapper) {
         this.mapper = mapper;
-        this.repository = repository;
-        this.orderService = orderService;
     }
 
     public List<OrderBookGetDto> getOrderBooksByOrderId(Long orderId) {

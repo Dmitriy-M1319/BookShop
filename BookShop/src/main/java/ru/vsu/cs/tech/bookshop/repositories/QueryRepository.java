@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface QueryRepository extends JpaRepository<BooksQuery, Long> {
-    @Query("select q from BooksQuery q where q.book.bookId = ?1")
+    @Query("select q from BooksQuery q where q.book.Id = ?1")
     List<BooksQuery> findQueriesByBookId(Long bookId);
     List<BooksQuery> findQueriesByStatus(String status);
 }
